@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: #0b0f2a;
+    color: #0ff; /* Neon cyan */
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem;
+}
+
+#stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* ======================== JUDUL & UPLOAD ======================== */
+h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00f;
+    color: white;
+    z-index: 10;
+    animation: pulse 4s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        text-shadow: 0 0 8px #0ff, 0 0 15px #0ff;
+    }
+    to {
+        text-shadow: 0 0 15px #0ff, 0 0 30px #0ff, 0 0 45px #00f;
+    }
+}
+
+.upload-container {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    z-index: 10;
+    align-items: center;
+}
+
+#file {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background-color: rgba(0, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid #0ff;
+    color: white; 
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px #0ff;
+}
+
+.btn-glow {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #008080;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    transition: 0.3s;
+    position: relative;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #00f;
+}
+
+/* ======================== GALERI ======================== */
+#list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 80rem;
+    padding: 0 1rem;
+    z-index: 10;
+}
+
+#list br {
+    display: none;
+}
+
+#list img,
+#list video {
+    width: 250px !important; 
+    height: 180px; 
+    object-fit: cover;
+    display: block;
+    margin: 0;
+
+    border-radius: 12px;
+    border: 2px solid #0ff;
+    box-shadow: 0 0 15px #0ff, 0 0 30px rgba(0, 255, 255, 0.3);
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    cursor: pointer;
+}
+
+#list img:hover,
+#list video:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 25px #0ff, 0 0 50px #0ff;
+}
+
+
+/* ======================== MODAL (Efek Hologram) ======================== */
+#modal {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0; 
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    opacity: 1; /* Diatur oleh JS */
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 65rem;
+    width: 95%; 
+    border: 3px solid #0ff;
+    border-radius: 16px;
+    box-shadow: 0 0 30px #0ff, 0 0 60px rgba(0, 255, 255, 0.5);
+    background-color: rgba(0, 255, 255, 0.05);
+    padding: 10px;
+}
+.modal-content button {
+    position: absolute;
+    top: -3rem; 
+    right: 0;
+    color: #ff00ff;
+    font-size: 2rem; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-shadow: 0 0 5px #ff00ff;
+    z-index: 100;
+    transition: transform 0.2s;
+}
+.modal-content button:hover {
+    transform: scale(1.2) rotate(5deg);
+}
+
+#modalImage,
+#modalVideo {
+    max-height: 90vh;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #0ff;
+    width: 100%;
+    object-fit: contain;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ======================== FOOTER ======================== */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 0;
+    font-size: 0.75rem;
+    color: #0ff;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}

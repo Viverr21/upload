@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galeri</title>
+    <link rel="stylesheet" href="style/index.css">
+</head>
+<body>
+<canvas id="stars"></canvas>
+  
+  <h1>📸 Upload Foto/Video 🚀</h1>
+
+  <div class="upload-container">
+    <input type="file" id="file">
+    <button onclick="upload()" class="btn-glow">Upload 🚀</button>
+  </div>
+
+
+  <div id="list"></div>
+
+  <div id="modal" class="hidden">
+    <div class="modal-content">
+      <button onclick="closeModal()">✖</button>
+      <img id="modalImage" class="hidden" />
+      <video id="modalVideo" controls class="hidden"></video>
+    </div>
+  </div>
+  <footer>© Rekayasa Perangkat Lunak</footer>
+  <script src="script/index.js"></script> 
+</body>
+</html>
