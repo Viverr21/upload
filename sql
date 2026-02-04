@@ -26,3 +26,11 @@ INSERT INTO nilai (kode_nilai, nis, kode_mapel, nilai) VALUES
 ('N006','1019200073','M002',85),
 ('N007','1019200073','M003',70),
 ('N008','1019200073','M004',88);
+
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    AVG(n.nilai) AS rata_rata
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+GROUP BY s.nis, s.nama_siswa;
