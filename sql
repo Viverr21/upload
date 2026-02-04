@@ -43,3 +43,11 @@ SELECT
 FROM nilai n
 JOIN siswa s ON n.nis = s.nis
 GROUP BY s.nis, s.nama_siswa;
+
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    SUM(n.nilai) AS total_nilai
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+GROUP BY s.nis, s.nama_siswa;
