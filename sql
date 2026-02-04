@@ -59,3 +59,6 @@ SELECT
 FROM nilai n
 JOIN siswa s ON n.nis = s.nis
 GROUP BY s.nis, s.nama_siswa;
+
+SELECT ROUND(AVG(nilai), 2) AS rata_rata
+FROM nilai;
