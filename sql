@@ -66,3 +66,7 @@ FROM nilai;
 SELECT *
 FROM siswa
 WHERE nama_siswa LIKE '%o%';
+
+SELECT *
+FROM siswa
+WHERE LOWER(nama_siswa) LIKE '%o%';
