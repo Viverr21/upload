@@ -1,0 +1,55 @@
+SELECT *
+FROM siswa
+WHERE nama_siswa LIKE '%o%';
+
+SELECT 
+    s.nama_siswa,
+    s.kelas,
+    m.nama_mapel,
+    n.nilai
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
+ORDER BY s.nama_siswa ASC;
+
+SELECT 
+    s.nama_siswa,
+    s.kelas,
+    n.nilai
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
+WHERE m.nama_mapel = 'Pemrograman Web'
+ORDER BY n.nilai DESC;
+
+SELECT 
+    s.nama_siswa,
+    s.kelas,
+    n.nilai
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
+WHERE m.nama_mapel = 'Basis Data'
+  AND s.kelas = 'XI RPL A'
+ORDER BY n.nilai ASC;
+
+SELECT 
+    s.nama_siswa,
+    ROUND(AVG(n.nilai), 1) AS rata_rata
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+WHERE s.kelas = 'XI RPL C'
+GROUP BY s.nama_siswa
+ORDER BY rata_rata DESC;
+
+SELECT 
+    s.nama_siswa,
+    s.kelas,
+    MIN(n.nilai) AS nilai_terendah,
+    MAX(n.nilai) AS nilai_tertinggi,
+    SUM(n.nilai) AS total_nilai,
+    ROUND(AVG(n.nilai), 1) AS rata_rata
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+GROUP BY s.nis, s.nama_siswa, s.kelas
+ORDER BY rata_rata DESC;
