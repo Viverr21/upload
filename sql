@@ -62,3 +62,7 @@ GROUP BY s.nis, s.nama_siswa;
 
 SELECT ROUND(AVG(nilai), 2) AS rata_rata
 FROM nilai;
+
+SELECT *
+FROM siswa
+WHERE nama_siswa LIKE '%o%';
