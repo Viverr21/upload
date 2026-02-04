@@ -1,0 +1,7 @@
+ insert into siswa values
+    -> ('1019200033','AGIN GINASTIAR','L','XI RPL A'),
+    -> ('1019200073','ANGGI NURMAYANTI','P','XI RPL B'),
+    -> ('1019200151','DEDE RAHMAT RAMADIANA','P','XI RPL C'),
+    -> ('1019200171','DEWINTA DWI HANI','P','XI RPL A'),
+    -> ('1019200230','FARIZ ZANUAR NASABI','L','XI RPL B'),
+    -> ('1019200259','HERA HERDIANA','P','XI RPL C');
