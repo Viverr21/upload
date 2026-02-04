@@ -34,3 +34,12 @@ SELECT
 FROM nilai n
 JOIN siswa s ON n.nis = s.nis
 GROUP BY s.nis, s.nama_siswa;
+
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    MAX(n.nilai) AS nilai_terbesar,
+    MIN(n.nilai) AS nilai_terkecil
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+GROUP BY s.nis, s.nama_siswa;
