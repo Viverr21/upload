@@ -1,0 +1,110 @@
+-- a. Database
+CREATE DATABASE db_nilai_nama;
+USE db_nilai_nama;
+
+-- b. Tabel siswa
+CREATE TABLE siswa (
+    nis VARCHAR(10) PRIMARY KEY NOT NULL,
+    nama_siswa VARCHAR(50) NOT NULL,
+    kelas VARCHAR(10) NOT NULL
+);
+
+INSERT INTO siswa (nis, nama_siswa, kelas) VALUES
+('1019200033','AGIN GINASTIAR','XI RPL A'),
+('1019200073','ANGGI NURMAYANTI','XI RPL B'),
+('1019200151','DEDE RAHMAT RAMADANA','XI RPL C'),
+('1019200171','DEWINTA DWI HANI','XI RPL A'),
+('1019200230','FARIZ ZANUAR NASABI','XI RPL B'),
+('1019200259','HERA HERDIANA','XI RPL C'),
+('1019200307','LENITA ALYA NINGRUM','XI RPL A'),
+('1019200336','MIRA YSMARANI','XI RPL B'),
+('1019200385','MUHAMAD ELPRADIVA R.','XI RPL C'),
+('1019200427','RANI ANDRIANI','XI RPL A'),
+('1019200465','RIRIN RISMARYANTI','XI RPL B'),
+('1019200511','SYAFIR YAHYA','XI RPL C');
+
+-- c. Tabel guru
+CREATE TABLE guru (
+    nitp VARCHAR(10) PRIMARY KEY NOT NULL,
+    nama_guru VARCHAR(50) NOT NULL,
+    alamat VARCHAR(50) NOT NULL
+);
+
+INSERT INTO guru (nitp, nama_guru, alamat) VALUES
+('G001','Rio Bambang Anariyono','Majalengka'),
+('G002','Nisa Farhatunnisa','Talaga'),
+('G003','Rezza Fauzia Husnain','Rajagaluh');
+
+-- d. Tabel mata pelajaran
+CREATE TABLE mata_pelajaran (
+    kode_mapel VARCHAR(10) PRIMARY KEY NOT NULL,
+    nitp VARCHAR(10) NOT NULL,
+    nama_mapel VARCHAR(50) NOT NULL,
+    FOREIGN KEY (nitp) REFERENCES guru(nitp)
+);
+
+INSERT INTO mata_pelajaran (kode_mapel, nitp, nama_mapel) VALUES
+('M001','G001','Basis Data'),
+('M002','G001','Pemrograman Web'),
+('M003','G002','Pemodelan Perangkat Lunak'),
+('M004','G003','Pemrograman Berorientasi Objek');
+
+-- e. Tabel nilai
+CREATE TABLE nilai (
+    kode_nilai VARCHAR(10) PRIMARY KEY NOT NULL,
+    nis VARCHAR(10) NOT NULL,
+    kode_mapel VARCHAR(10) NOT NULL,
+    nilai INT(11) NOT NULL,
+    FOREIGN KEY (nis) REFERENCES siswa(nis),
+    FOREIGN KEY (kode_mapel) REFERENCES mata_pelajaran(kode_mapel)
+);
+
+INSERT INTO nilai (kode_nilai, nis, kode_mapel, nilai) VALUES
+('N001','1019200033','M001',85),
+('N002','1019200033','M002',80),
+('N003','1019200033','M003',75),
+('N004','1019200033','M004',90),
+('N005','1019200073','M001',78),
+('N006','1019200073','M002',85),
+('N007','1019200073','M003',70),
+('N008','1019200073','M004',88),
+('N009','1019200151','M001',82),
+('N010','1019200151','M002',76),
+('N011','1019200151','M003',90),
+('N012','1019200151','M004',84),
+('N013','1019200171','M001',88),
+('N014','1019200171','M002',74),
+('N015','1019200171','M003',85),
+('N016','1019200171','M004',77),
+('N017','1019200230','M001',86),
+('N018','1019200230','M002',81),
+('N019','1019200230','M003',80),
+('N020','1019200230','M004',89),
+('N021','1019200259','M001',74),
+('N022','1019200259','M002',90),
+('N023','1019200259','M003',83),
+('N024','1019200259','M004',78),
+('N025','1019200307','M001',83),
+('N026','1019200307','M002',77),
+('N027','1019200307','M003',79),
+('N028','1019200307','M004',86),
+('N029','1019200336','M001',90),
+('N030','1019200336','M002',82),
+('N031','1019200336','M003',84),
+('N032','1019200336','M004',88),
+('N033','1019200385','M001',76),
+('N034','1019200385','M002',78),
+('N035','1019200385','M003',81),
+('N036','1019200385','M004',80),
+('N037','1019200427','M001',85),
+('N038','1019200427','M002',87),
+('N039','1019200427','M003',74),
+('N040','1019200427','M004',83),
+('N041','1019200465','M001',79),
+('N042','1019200465','M002',84),
+('N043','1019200465','M003',88),
+('N044','1019200465','M004',82),
+('N045','1019200511','M001',72),
+('N046','1019200511','M002',86),
+('N047','1019200511','M003',85),
+('N048','1019200511','M004',80);
