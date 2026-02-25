@@ -1,0 +1,74 @@
+CREATE DATABASE penjualan_rpl;
+USE penjualan_rpl;
+
+-- Tabel Barang
+CREATE TABLE barang (
+    id_barang INT(11) NOT NULL PRIMARY KEY,
+    nama_barang VARCHAR(255),
+    harga DECIMAL(10,2),
+    stok INT(11)
+);
+
+-- Tabel Pelanggan
+CREATE TABLE pelanggan (
+    id_pelanggan INT(11) NOT NULL PRIMARY KEY,
+    nama_pelanggan VARCHAR(255),
+    alamat VARCHAR(255),
+    telepon VARCHAR(15)
+);
+
+-- Tabel Penjualan
+CREATE TABLE penjualan (
+    id_penjualan INT(11) NOT NULL PRIMARY KEY,
+    tanggal DATE,
+    id_pelanggan INT(11),
+    FOREIGN KEY (id_pelanggan) REFERENCES pelanggan(id_pelanggan)
+);
+
+-- Tabel Detail Penjualan
+CREATE TABLE detail_penjualan (
+    id_penjualan INT(11),
+    id_barang INT(11),
+    jumlah INT(11),
+    subtotal DECIMAL(10,2),
+    FOREIGN KEY (id_penjualan) REFERENCES penjualan(id_penjualan),
+    FOREIGN KEY (id_barang) REFERENCES barang(id_barang)
+);
+
+INSERT INTO barang VALUES 
+(1, 'Laptop', 8000000.00, 10),
+(2, 'Mouse', 150000.00, 50),
+(3, 'Keyboard', 300000.00, 30),
+(4, 'Monitor', 2000000.00, 15),
+(5, 'Printer', 2500000.00, 8),
+(6, 'Flashdisk', 100000.00, 100),
+(7, 'Harddisk', 750000.00, 20),
+(8, 'RAM', 500000.00, 25),
+(9, 'Speaker', 400000.00, 18),
+(10, 'Webcam', 350000.00, 22);
+
+INSERT INTO pelanggan VALUES 
+(1, 'Andi', 'Jakarta', '0811111111'),
+(2, 'Budi', 'Bandung', '0822222222'),
+(3, 'Citra', 'Surabaya', '0833333333'),
+(4, 'Dewi', 'Medan', '0844444444'),
+(5, 'Eka', 'Semarang', '0855555555'),
+(6, 'Fajar', 'Bogor', '0866666666'),
+(7, 'Gina', 'Depok', '0877777777'),
+(8, 'Hadi', 'Bekasi', '0888888888'),
+(9, 'Intan', 'Makassar', '0899999999'),
+(10, 'Joko', 'Yogyakarta', '0810000000');
+
+-- Data Penjualan
+INSERT INTO penjualan VALUES 
+(1, '2025-01-01', 1), (2, '2025-01-02', 2), (3, '2025-01-03', 3),
+(4, '2025-01-04', 4), (5, '2025-01-05', 5), (6, '2025-01-06', 6),
+(7, '2025-01-07', 7), (8, '2025-01-08', 8), (9, '2025-01-09', 9),
+(10, '2025-01-10', 10);
+
+-- Data Detail Penjualan
+INSERT INTO detail_penjualan VALUES 
+(1, 1, 1, 8000000.00), (2, 2, 2, 300000.00), (3, 3, 1, 300000.00),
+(4, 4, 1, 2000000.00), (5, 5, 1, 2500000.00), (6, 6, 5, 500000.00),
+(7, 7, 2, 1500000.00), (8, 8, 4, 21000000.00), (9, 9, 1, 400000.00),
+(10, 10, 1, 350000.00);
