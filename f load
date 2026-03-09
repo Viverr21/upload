@@ -1,1 +1,27 @@
 
+        <!-- PILIHAN 1: RING ROTATING 
+        <div class="loading-ring">
+            <div class="ring"></div>
+            <div class="ring2"></div>
+            <div class="ring3"></div>
+        </div>
+-->
+        
+        <!-- ATAU PILIHAN 2: BOOK ANIMATION (COMMENT RING, UNCOMMENT INI) -->
+        <div class="loading-book">
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+        </div>
+        
+        <!--
+        <div class="loading-brain">
+            <div class="brain-part"></div>
+            <div class="brain-part"></div>
+            <div class="brain-part"></div>
+            <div class="brain-part"></div>
+            <div class="brain-part"></div>
+        </div>
+        -->
