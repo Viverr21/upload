@@ -2,7 +2,8 @@
 SELECT SUM(stok) AS total_stok FROM barang;
 
 -- 2. Rata-rata harga barang
-SELECT AVG(harga) AS rata_rata_harga FROM barang;
+SELECT ROUND(AVG(harga), 2) AS rata_rata_harga
+FROM barang;
 
 -- 3. Jumlah pelanggan terdaftar
 SELECT COUNT(*) AS jumlah_pelanggan FROM pelanggan;
@@ -37,6 +38,6 @@ JOIN barang b ON dp.id_barang = b.id_barang
 GROUP BY dp.id_barang;
 
 -- 10. Rata-rata subtotal per transaksi
-SELECT id_penjualan, AVG(subtotal) AS rata_rata_subtotal
+SELECT id_penjualan, ROUND(AVG(subtotal), 2) AS rata_rata_subtotal
 FROM detail_penjualan
 GROUP BY id_penjualan;
