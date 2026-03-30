@@ -1,0 +1,45 @@
+-- 1. Total seluruh stok barang
+SELECT SUM(stok) AS total_stok
+FROM barang;
+
+-- 2. Rata-rata harga barang
+SELECT AVG(harga) AS rata_rata_harga
+FROM barang;
+
+-- 3. Jumlah pelanggan terdaftar
+SELECT COUNT(*) AS jumlah_pelanggan
+FROM pelanggan;
+
+-- 4. Total seluruh transaksi
+SELECT COUNT(*) AS total_transaksi
+FROM penjualan;
+
+-- 5. Total seluruh pendapatan
+SELECT SUM(subtotal) AS total_pendapatan
+FROM detail_penjualan;
+
+-- 6. Total stok per barang
+SELECT nama_barang, stok
+FROM barang;
+
+-- 7. Jumlah transaksi per pelanggan
+SELECT p.nama_pelanggan, COUNT(pj.id_penjualan) AS jumlah_transaksi
+FROM pelanggan p
+LEFT JOIN penjualan pj ON p.id_pelanggan = pj.id_pelanggan
+GROUP BY p.id_pelanggan;
+
+-- 8. Total belanja per transaksi
+SELECT id_penjualan, SUM(subtotal) AS total_belanja
+FROM detail_penjualan
+GROUP BY id_penjualan;
+
+-- 9. Total jumlah barang terjual per barang
+SELECT b.nama_barang, SUM(dp.jumlah) AS total_terjual
+FROM detail_penjualan dp
+JOIN barang b ON dp.id_barang = b.id_barang
+GROUP BY dp.id_barang;
+
+-- 10. Rata-rata subtotal per transaksi
+SELECT id_penjualan, AVG(subtotal) AS rata_rata_subtotal
+FROM detail_penjualan
+GROUP BY id_penjualan;
