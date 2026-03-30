@@ -14,7 +14,10 @@ SELECT COUNT(*) AS total_transaksi FROM penjualan;
 SELECT SUM(subtotal) AS total_pendapatan FROM detail_penjualan;
 
 -- 6. Total stok per barang
-SELECT nama_barang, stok FROM barang;
+SELECT nama_barang, SUM(stok) AS total_stok
+FROM barang
+GROUP BY nama_barang
+ORDER BY nama_barang ASC;
 
 -- 7. Jumlah transaksi per pelanggan
 SELECT p.id_pelanggan, COUNT(pj.id_penjualan) AS jumlah_transaksi
