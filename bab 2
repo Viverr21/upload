@@ -62,7 +62,7 @@ WHERE siswa.nis = nilai.nis
 GROUP BY siswa.nis, nama_siswa, kelas 
 ORDER BY siswa.nis ASC, nama_siswa ASC;
 
--- Lihat hasil: SELECT * FROM v_ratarata_siswa;
+SELECT * FROM v_ratarata_siswa;
 
 CREATE OR REPLACE VIEW v_pbo AS 
 SELECT 
