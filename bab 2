@@ -1,0 +1,88 @@
+SELECT 
+    m.nama_mapel,
+    g.nama_guru,
+    ROUND(AVG(n.nilai), 2) AS rata_rata
+FROM nilai n
+JOIN mapel m ON n.id_mapel = m.id_mapel
+JOIN guru g ON m.id_guru = g.id_guru
+GROUP BY m.nama_mapel, g.nama_guru;
+
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    m.nama_mapel,
+    n.nilai
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mapel m ON n.id_mapel = m.id_mapel
+WHERE n.nilai < 80;
+
+SELECT 
+    s.nama_siswa,
+    s.kelas,
+    n.nilai,
+    CASE
+        WHEN n.nilai > 80 THEN 'Baik'
+        WHEN n.nilai > 75 THEN 'Cukup'
+        ELSE 'Kurang'
+    END AS predikat
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mapel m ON n.id_mapel = m.id_mapel
+WHERE m.nama_mapel = 'Basis Data';
+
+SELECT 
+    s.nama_siswa,
+    s.kelas,
+    n.nilai,
+    CASE
+        WHEN n.nilai > 85 THEN 'Istimewa'
+        WHEN n.nilai > 80 THEN 'Baik'
+        WHEN n.nilai > 75 THEN 'Cukup'
+        ELSE 'Kurang'
+    END AS predikat
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mapel m ON n.id_mapel = m.id_mapel
+WHERE m.nama_mapel = 'Pemodelan Perangkat Lunak'
+AND s.kelas = 'XI RPL B';
+
+CREATE VIEW v_ratarata_siswa AS
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    s.kelas,
+    ROUND(AVG(n.nilai), 1) AS rata_rata
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+GROUP BY s.nis, s.nama_siswa, s.kelas;
+SELECT * FROM v_ratarata_siswa;
+
+CREATE VIEW v_pbo AS
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    s.kelas,
+    n.nilai AS nilai_pbo
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mapel m ON n.id_mapel = m.id_mapel
+WHERE m.nama_mapel = 'Pemrograman Berorientasi Objek'
+ORDER BY n.nilai DESC;
+
+CREATE VIEW v_web_xirpla AS
+SELECT 
+    s.nis,
+    s.nama_siswa,
+    s.kelas,
+    n.nilai AS nilai_web,
+    CASE
+        WHEN n.nilai > 80 THEN 'Baik'
+        WHEN n.nilai > 75 THEN 'Cukup'
+        ELSE 'Kurang'
+    END AS predikat
+FROM nilai n
+JOIN siswa s ON n.nis = s.nis
+JOIN mapel m ON n.id_mapel = m.id_mapel
+WHERE m.nama_mapel = 'Pemrograman Web'
+AND s.kelas = 'XI RPL A';
