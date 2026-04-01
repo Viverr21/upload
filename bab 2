@@ -1,95 +1,99 @@
 SELECT 
-    m.nama_mapel, 
-    g.nama_guru, 
-    ROUND(AVG(n.nilai), 2) AS rata_rata
-FROM mata_pelajaran m
-JOIN guru g ON m.nitp = g.nitp
-JOIN nilai n ON m.kode_mapel = n.kode_mapel
-GROUP BY m.kode_mapel, m.nama_mapel, g.nama_guru
-ORDER BY m.kode_mapel ASC;
+    nama_mapel, 
+    nama_guru, 
+    ROUND(AVG(nilai), 2) AS rata_rata 
+FROM mata_pelajaran, guru, nilai 
+WHERE mata_pelajaran.kode_mapel = nilai.kode_mapel 
+AND mata_pelajaran.nitp = guru.nitp 
+GROUP BY mata_pelajaran.kode_mapel, nama_mapel, nama_guru
+ORDER BY mata_pelajaran.kode_mapel ASC;
 
 SELECT 
-    s.nis, 
-    s.nama_siswa, 
-    m.nama_mapel, 
-    n.nilai
-FROM siswa s
-JOIN nilai n ON s.nis = n.nis
-JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
-WHERE n.nilai < 80;
+    siswa.nis, 
+    nama_siswa, 
+    nama_mapel, 
+    nilai 
+FROM siswa, nilai, mata_pelajaran 
+WHERE siswa.nis = nilai.nis 
+AND nilai.kode_mapel = mata_pelajaran.kode_mapel 
+AND nilai < 80 
+ORDER BY siswa.nis ASC, nama_siswa ASC;
 
 SELECT 
-    s.nama_siswa, 
-    s.kelas, 
-    n.nilai,
+    nama_siswa, 
+    kelas, 
+    nilai, 
     CASE 
-        WHEN n.nilai > 80 THEN 'Baik'
-        WHEN n.nilai >= 75 THEN 'Cukup'
-        ELSE 'Kurang'
-    END AS Predikat
-FROM siswa s
-JOIN nilai n ON s.nis = n.nis
-JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
-WHERE m.nama_mapel = 'Basis Data';
+        WHEN nilai > 80 THEN 'Baik' 
+        WHEN nilai >= 75 THEN 'Cukup' 
+        ELSE 'Kurang' 
+    END AS Predikat 
+FROM siswa, nilai, mata_pelajaran 
+WHERE siswa.nis = nilai.nis 
+AND nilai.kode_mapel = mata_pelajaran.kode_mapel 
+AND nama_mapel = 'Basis Data' 
+ORDER BY siswa.nis ASC, nama_siswa ASC;
 
 SELECT 
-    s.nama_siswa, 
-    s.kelas, 
-    n.nilai,
+    nama_siswa, 
+    kelas, 
+    nilai, 
     CASE 
-        WHEN n.nilai > 85 THEN 'Istimewa'
-        WHEN n.nilai > 80 THEN 'Baik'
-        WHEN n.nilai >= 75 THEN 'Cukup'
-        ELSE 'Kurang'
-    END AS Predikat
-FROM siswa s
-JOIN nilai n ON s.nis = n.nis
-JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
-WHERE m.nama_mapel = 'Pemodelan Perangkat Lunak' 
-AND s.kelas = 'XI RPL B';
+        WHEN nilai > 85 THEN 'Istimewa' 
+        WHEN nilai > 80 THEN 'Baik' 
+        WHEN nilai >= 75 THEN 'Cukup' 
+        ELSE 'Kurang' 
+    END AS Predikat 
+FROM siswa, nilai, mata_pelajaran 
+WHERE siswa.nis = nilai.nis 
+AND nilai.kode_mapel = mata_pelajaran.kode_mapel 
+AND nama_mapel = 'Pemodelan Perangkat Lunak' 
+AND kelas = 'XI RPL B' 
+ORDER BY siswa.nis ASC, nama_siswa ASC;
 
-CREATE OR REPLACE VIEW v_ratarata_siswa AS
+CREATE OR REPLACE VIEW v_ratarata_siswa AS 
 SELECT 
-    s.nis, 
-    s.nama_siswa, 
-    s.kelas, 
-    ROUND(AVG(n.nilai), 1) AS rata_rata
-FROM siswa s
-JOIN nilai n ON s.nis = n.nis
-GROUP BY s.nis, s.nama_siswa, s.kelas
-ORDER BY s.nis ASC;
+    siswa.nis, 
+    nama_siswa, 
+    kelas, 
+    ROUND(AVG(nilai), 1) AS rata_rata 
+FROM siswa, nilai 
+WHERE siswa.nis = nilai.nis 
+GROUP BY siswa.nis, nama_siswa, kelas 
+ORDER BY siswa.nis ASC, nama_siswa ASC;
 
-SELECT * FROM v_ratarata_siswa;
+-- Lihat hasil: SELECT * FROM v_ratarata_siswa;
 
-CREATE VIEW v_pbo AS
+CREATE OR REPLACE VIEW v_pbo AS 
 SELECT 
-    s.nis, 
-    s.nama_siswa, 
-    s.kelas, 
-    n.nilai AS nilai_pbo
-FROM siswa s
-JOIN nilai n ON s.nis = n.nis
-JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
-WHERE m.nama_mapel = 'Pemrograman Berorientasi Objek'
-ORDER BY n.nilai DESC;
+    siswa.nis, 
+    nama_siswa, 
+    kelas, 
+    nilai AS nilai_pbo 
+FROM siswa, nilai, mata_pelajaran 
+WHERE siswa.nis = nilai.nis 
+AND nilai.kode_mapel = mata_pelajaran.kode_mapel 
+AND nama_mapel = 'Pemrograman Berorientasi Objek' 
+ORDER BY nilai DESC;
 
 SELECT * FROM v_pbo;
 
-CREATE VIEW v_web_xi_rpla AS
+CREATE OR REPLACE VIEW v_web_xi_rpla AS 
 SELECT 
-    s.nis, 
-    s.nama_siswa, 
-    s.kelas, 
-    n.nilai AS nilai_web,
+    siswa.nis, 
+    nama_siswa, 
+    kelas, 
+    nilai AS nilai_web, 
     CASE 
-        WHEN n.nilai > 85 THEN 'Istimewa'
-        WHEN n.nilai >= 75 THEN 'Cukup'
-        ELSE 'Kurang'
-    END AS Predikat
-FROM siswa s
-JOIN nilai n ON s.nis = n.nis
-JOIN mata_pelajaran m ON n.kode_mapel = m.kode_mapel
-WHERE m.nama_mapel = 'Pemrograman Web' 
-AND s.kelas = 'XI RPL A';
+        WHEN nilai > 85 THEN 'Istimewa' 
+        WHEN nilai >= 75 THEN 'Cukup' 
+        ELSE 'Kurang' 
+    END AS Predikat 
+FROM siswa, nilai, mata_pelajaran 
+WHERE siswa.nis = nilai.nis 
+AND nilai.kode_mapel = mata_pelajaran.kode_mapel 
+AND nama_mapel = 'Pemrograman Web' 
+AND kelas = 'XI RPL A' 
+ORDER BY siswa.nis ASC, nama_siswa ASC;
 
 SELECT * FROM v_web_xi_rpla;
