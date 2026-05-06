@@ -225,13 +225,61 @@ INSERT INTO Perubahan_Status_Jadwal_Penerbangan VALUES
 -- =====================================================
 -- QUERY UNTUK SCREENSHOT (SELECT * FROM ...)
 -- =====================================================
--- SELECT * FROM Akun;
--- SELECT * FROM Maskapai;
--- SELECT * FROM Negara;
--- SELECT * FROM Bandara;
--- SELECT * FROM Jadwal_Penerbangan;
--- SELECT * FROM Transaksi;
--- SELECT * FROM Detail_Transaksi;
--- SELECT * FROM Kode_Promo;
--- SELECT * FROM Status_Penerbangan;
--- SELECT * FROM Perubahan_Status_Jadwal_Penerbangan;
+1 data Akun
+1 data Kode_Promo
+1 data Status_Penerbangan
+1 data Perubahan_Status_Jadwal_Penerbangan
+1 data Maskapai
+2 data Negara
+2 data Bandara
+2 data Jadwal_Penerbangan
+2 data Transaksi
+2 data Detail_Transaksi
+
+-- 1 DATA AKUN (NAMA PEMBUAT DATABASE = Rismawan)
+INSERT INTO Akun VALUES
+('AKN001', 'rismawan', 'pass123', 'Rismawan', '1991-07-19', '081234567890');
+
+-- 1 DATA MASKAPAI
+INSERT INTO Maskapai VALUES
+('MSK001', 'Garuda Indonesia', 'PT Garuda Indonesia', 150, 'Maskapai nasional Indonesia');
+
+-- 2 DATA NEGARA
+INSERT INTO Negara VALUES
+('NGR001', 'Indonesia', 'Jakarta'),
+('NGR002', 'Malaysia', 'Kuala Lumpur');
+
+-- 2 DATA BANDARA
+INSERT INTO Bandara VALUES
+('BDR001', 'Soekarno-Hatta International Airport', 'CGK', 'Tangerang', 'NGR001', 3, 'Jl. Bandara Soekarno-Hatta, Tangerang'),
+('BDR002', 'Ngurah Rai International Airport', 'DPS', 'Denpasar', 'NGR001', 2, 'Jl. Airport Ngurah Rai, Bali');
+
+-- 2 DATA JADWAL PENERBANGAN (BERANGKAT DAN PULANG)
+-- Berangkat: Jakarta (CGK) ke Denpasar (DPS)
+-- Pulang: Denpasar (DPS) ke Jakarta (CGK)
+INSERT INTO Jadwal_Penerbangan VALUES
+('JDP001', 'GA-123', 'BDR001', 'BDR002', 'MSK001', '2025-06-01 08:00:00', '02:00:00', 1200000),
+('JDP002', 'GA-456', 'BDR002', 'BDR001', 'MSK001', '2025-06-05 14:00:00', '02:00:00', 1200000);
+
+-- 1 DATA KODE PROMO
+INSERT INTO Kode_Promo VALUES
+('PRM001', 'PROMO20', '20%', '2025-12-31', 'Diskon 20% untuk semua rute');
+
+-- 2 DATA TRANSAKSI (1 AKUN MELAKUKAN 2 TRANSAKSI: PERGI & PULANG)
+INSERT INTO Transaksi VALUES
+('TRX001', 'AKN001', '2025-05-20', 'JDP001', 1, 1200000, 'PRM001'),  -- Berangkat
+('TRX002', 'AKN001', '2025-05-20', 'JDP002', 1, 1200000, 'PRM001');  -- Pulang
+
+-- 2 DATA DETAIL TRANSAKSI (MASING-MASING TRANSAKSI 1 PENUMPANG)
+INSERT INTO Detail_Transaksi VALUES
+('DTX001', 'TRX001', 1, 'Rismawan'),   -- Penumpang berangkat
+('DTX002', 'TRX002', 1, 'Rismawan');   -- Penumpang pulang
+
+-- 1 DATA STATUS PENERBANGAN
+INSERT INTO Status_Penerbangan VALUES
+('STS001', 'Tepat Waktu');
+
+-- 1 DATA PERUBAHAN STATUS JADWAL PENERBANGAN
+INSERT INTO Perubahan_Status_Jadwal_Penerbangan VALUES
+('PSJ001', 'JDP001', 'STS001', '2025-06-01 06:00:00', NULL);
+
