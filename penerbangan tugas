@@ -3,7 +3,7 @@
 -- ============================================
 
 -- Membuat database
-CREATE DATABASE IF NOT EXISTS db_penerbangan_becky;
+CREATE DATABASE db_penerbangan_becky;
 USE db_penerbangan_becky;
 
 -- ============================================
