@@ -1,0 +1,237 @@
+-- ============================================
+-- DATABASE PENERBANGAN - Becky
+-- ============================================
+
+-- Membuat database
+CREATE DATABASE IF NOT EXISTS db_penerbangan_becky;
+USE db_penerbangan_becky;
+
+-- ============================================
+-- 1. MEMBUAT TABEL
+-- ============================================
+
+-- a. Akun
+CREATE TABLE Akun (
+    id_akun INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    nama VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
+    no_telepon VARCHAR(20)
+);
+
+-- b. Maskapai
+CREATE TABLE Maskapai (
+    id_maskapai INT PRIMARY KEY AUTO_INCREMENT,
+    kode_maskapai VARCHAR(10) NOT NULL UNIQUE,
+    nama_maskapai VARCHAR(100) NOT NULL,
+    negara_asal VARCHAR(50)
+);
+
+-- c. Negara
+CREATE TABLE Negara (
+    id_negara INT PRIMARY KEY AUTO_INCREMENT,
+    kode_negara VARCHAR(5) NOT NULL UNIQUE,
+    nama_negara VARCHAR(100) NOT NULL
+);
+
+-- d. Bandara
+CREATE TABLE Bandara (
+    id_bandara INT PRIMARY KEY AUTO_INCREMENT,
+    kode_bandara VARCHAR(10) NOT NULL UNIQUE,
+    nama_bandara VARCHAR(100) NOT NULL,
+    kota VARCHAR(50),
+    id_negara INT,
+    FOREIGN KEY (id_negara) REFERENCES Negara(id_negara)
+);
+
+-- e. Jadwal Penerbangan
+CREATE TABLE Jadwal_Penerbangan (
+    id_jadwal INT PRIMARY KEY AUTO_INCREMENT,
+    kode_penerbangan VARCHAR(20) NOT NULL UNIQUE,
+    id_maskapai INT,
+    id_bandara_keberangkatan INT,
+    id_bandara_tujuan INT,
+    waktu_keberangkatan DATETIME,
+    waktu_kedatangan DATETIME,
+    harga DECIMAL(12,2),
+    FOREIGN KEY (id_maskapai) REFERENCES Maskapai(id_maskapai),
+    FOREIGN KEY (id_bandara_keberangkatan) REFERENCES Bandara(id_bandara),
+    FOREIGN KEY (id_bandara_tujuan) REFERENCES Bandara(id_bandara)
+);
+
+-- f. Transaksi
+CREATE TABLE Transaksi (
+    id_transaksi INT PRIMARY KEY AUTO_INCREMENT,
+    id_akun INT,
+    id_jadwal INT,
+    tanggal_transaksi DATETIME DEFAULT CURRENT_TIMESTAMP,
+    kode_promo VARCHAR(20),
+    total_harga DECIMAL(12,2),
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun),
+    FOREIGN KEY (id_jadwal) REFERENCES Jadwal_Penerbangan(id_jadwal)
+);
+
+-- g. Detail Transaksi
+CREATE TABLE Detail_Transaksi (
+    id_detail INT PRIMARY KEY AUTO_INCREMENT,
+    id_transaksi INT,
+    nomor_kursi VARCHAR(10),
+    status_pembayaran ENUM('Pending', 'Sukses', 'Gagal') DEFAULT 'Pending',
+    FOREIGN KEY (id_transaksi) REFERENCES Transaksi(id_transaksi)
+);
+
+-- h. Kode Promo
+CREATE TABLE Kode_Promo (
+    id_promo INT PRIMARY KEY AUTO_INCREMENT,
+    kode_promo VARCHAR(20) NOT NULL UNIQUE,
+    persen_diskon DECIMAL(5,2),
+    berlaku_hingga DATE
+);
+
+-- i. Status Penerbangan
+CREATE TABLE Status_Penerbangan (
+    id_status INT PRIMARY KEY AUTO_INCREMENT,
+    nama_status VARCHAR(50) NOT NULL UNIQUE  -- contoh: On Time, Delayed, Cancelled, Boarding, Take Off, Landing
+);
+
+-- j. Perubahan Status Jadwal Penerbangan
+CREATE TABLE Perubahan_Status_Jadwal (
+    id_perubahan INT PRIMARY KEY AUTO_INCREMENT,
+    id_jadwal INT,
+    id_status INT,
+    waktu_perubahan DATETIME DEFAULT CURRENT_TIMESTAMP,
+    keterangan TEXT,
+    FOREIGN KEY (id_jadwal) REFERENCES Jadwal_Penerbangan(id_jadwal),
+    FOREIGN KEY (id_status) REFERENCES Status_Penerbangan(id_status)
+);
+
+-- ============================================
+-- 2. PRIMARY KEY sudah ditambahkan di setiap tabel
+-- ============================================
+
+-- ============================================
+-- 3. TAMBAHKAN 4 DATA PADA SETIAP TABEL (kecuali Status Penerbangan)
+-- ============================================
+
+-- 3a. Kode Promo (4 data)
+INSERT INTO Kode_Promo (kode_promo, persen_diskon, berlaku_hingga) VALUES
+('PROMO10', 10.00, '2025-12-31'),
+('DISKON20', 20.00, '2025-10-15'),
+('HEMAT15', 15.00, '2025-11-30'),
+('FLASH30', 30.00, '2025-09-01');
+
+-- 3b. Maskapai (4 data)
+INSERT INTO Maskapai (kode_maskapai, nama_maskapai, negara_asal) VALUES
+('GA', 'Garuda Indonesia', 'Indonesia'),
+('JT', 'Lion Air', 'Indonesia'),
+('QZ', 'AirAsia', 'Indonesia'),
+('IU', 'Super Air Jet', 'Indonesia');
+
+-- 3c. Negara (4 data)
+INSERT INTO Negara (kode_negara, nama_negara) VALUES
+('ID', 'Indonesia'),
+('SG', 'Singapura'),
+('MY', 'Malaysia'),
+('TH', 'Thailand');
+
+-- 3d. Bandara (4 data) - menggunakan id_negara sesuai data di atas
+INSERT INTO Bandara (kode_bandara, nama_bandara, kota, id_negara) VALUES
+('CGK', 'Soekarno-Hatta International Airport', 'Tangerang', 1),
+('DPS', 'Ngurah Rai International Airport', 'Denpasar', 1),
+('SUB', 'Juanda International Airport', 'Surabaya', 1),
+('KNO', 'Kualanamu International Airport', 'Medan', 1);
+
+-- ============================================
+-- 4 & 5. MEMBUAT 4 AKUN + TRANSAKSI (Berangkat & Pulang)
+-- Akun pertama: Becky
+-- ============================================
+
+-- Memasukkan 4 akun
+INSERT INTO Akun (username, nama, email, no_telepon) VALUES
+('becky', 'Becky', 'becky@example.com', '081234567890'),
+('johndoe', 'John Doe', 'john@example.com', '081298765432'),
+('janesmith', 'Jane Smith', 'jane@example.com', '081255512345'),
+('mikebrown', 'Mike Brown', 'mike@example.com', '081277788899');
+
+-- Tambahkan jadwal penerbangan untuk keperluan transaksi
+INSERT INTO Jadwal_Penerbangan (kode_penerbangan, id_maskapai, id_bandara_keberangkatan, id_bandara_tujuan, waktu_keberangkatan, waktu_kedatangan, harga) VALUES
+('GA-202', 1, 1, 2, '2025-06-20 07:00:00', '2025-06-20 08:30:00', 1200000),
+('GA-203', 1, 2, 1, '2025-06-25 15:00:00', '2025-06-25 16:30:00', 1200000),
+('JT-101', 2, 1, 3, '2025-06-21 09:00:00', '2025-06-21 10:15:00', 800000),
+('JT-102', 2, 3, 1, '2025-06-26 14:00:00', '2025-06-26 15:15:00', 800000),
+('QZ-555', 3, 2, 4, '2025-07-01 10:00:00', '2025-07-01 11:45:00', 950000),
+('QZ-556', 3, 4, 2, '2025-07-05 16:00:00', '2025-07-05 17:45:00', 950000),
+('IU-888', 4, 3, 4, '2025-07-10 06:00:00', '2025-07-10 07:20:00', 700000),
+('IU-889', 4, 4, 3, '2025-07-15 18:00:00', '2025-07-15 19:20:00', 700000);
+
+-- Tambahkan status penerbangan (wajib agar referensi tidak error)
+INSERT INTO Status_Penerbangan (nama_status) VALUES
+('On Time'), ('Delayed'), ('Cancelled'), ('Boarding'), ('Take Off'), ('Landing');
+
+-- Tambahkan perubahan status jadwal (opsional, minimal 4 data)
+INSERT INTO Perubahan_Status_Jadwal (id_jadwal, id_status, keterangan) VALUES
+(1, 1, 'Penerbangan tepat waktu'),
+(1, 4, 'Boarding dimulai'),
+(2, 1, 'Penerbangan tepat waktu'),
+(3, 2, 'Delay 30 menit karena cuaca');
+
+-- ============================================
+-- 5. MEMBUAT TRANSAKSI (masing-masing akun 2 transaksi: berangkat & pulang)
+-- ============================================
+
+-- Akun Becky (id_akun=1)
+-- Transaksi 1: Berangkat (menggunakan jadwal id=1)
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (1, 1, 'PROMO10', 1080000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (1, '12A', 'Sukses');
+
+-- Transaksi 2: Pulang (menggunakan jadwal id=2)
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (1, 2, 'DISKON20', 960000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (2, '5C', 'Sukses');
+
+-- Akun John Doe (id_akun=2)
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (2, 3, 'HEMAT15', 680000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (3, '2B', 'Sukses');
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (2, 4, NULL, 800000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (4, '8D', 'Sukses');
+
+-- Akun Jane Smith (id_akun=3)
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (3, 5, 'FLASH30', 665000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (5, '3E', 'Sukses');
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (3, 6, 'PROMO10', 855000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (6, '11F', 'Sukses');
+
+-- Akun Mike Brown (id_akun=4)
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (4, 7, NULL, 700000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (7, '1A', 'Sukses');
+INSERT INTO Transaksi (id_akun, id_jadwal, kode_promo, total_harga) VALUES (4, 8, 'HEMAT15', 595000);
+INSERT INTO Detail_Transaksi (id_transaksi, nomor_kursi, status_pembayaran) VALUES (8, '7C', 'Sukses');
+
+-- ============================================
+-- 7. INNER JOIN sesuai format yang diminta
+-- ============================================
+
+SELECT 
+    t.id_transaksi AS 'Id Transaksi',
+    a.username AS 'Username',
+    a.nama AS 'Nama',
+    jp.kode_penerbangan AS 'Kode Penerbangan',
+    m.nama_maskapai AS 'Maskapai',
+    b1.kode_bandara AS 'Id Bandara Keberangkatan',
+    b2.kode_bandara AS 'Id Tujuan Bandara',
+    sp.nama_status AS 'Status',
+    t.total_harga AS 'Total Harga'
+FROM Transaksi t
+JOIN Akun a ON t.id_akun = a.id_akun
+JOIN Jadwal_Penerbangan jp ON t.id_jadwal = jp.id_jadwal
+JOIN Maskapai m ON jp.id_maskapai = m.id_maskapai
+JOIN Bandara b1 ON jp.id_bandara_keberangkatan = b1.id_bandara
+JOIN Bandara b2 ON jp.id_bandara_tujuan = b2.id_bandara
+LEFT JOIN Perubahan_Status_Jadwal psj ON jp.id_jadwal = psj.id_jadwal
+LEFT JOIN Status_Penerbangan sp ON psj.id_status = sp.id_status
+ORDER BY t.id_transaksi;
+
+-- ============================================
+-- 9. EXPORT DATABASE (dijalankan di command line jika perlu)
+-- ============================================
+-- Untuk export, gunakan command di terminal/cmd:
+-- mysqldump -u root -p db_penerbangan_becky > Database_Penerbangan_Becky.sql
