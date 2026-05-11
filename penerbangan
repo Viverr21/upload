@@ -1,285 +1,297 @@
--- =====================================================
--- MEMBUAT TABEL (TANPA FOREIGN KEY)
--- =====================================================
+-- ============================================
+-- DATABASE PENERBANGAN - Becky
+-- 100% SESUAI SOAL PENUGASAN
+-- Semua Primary Key = VARCHAR(255)
+-- Tanpa FOREIGN KEY
+-- ============================================
 
--- 1. TABEL AKUN
+-- Membuat database
+CREATE DATABASE IF NOT EXISTS db_penerbangan_becky;
+USE db_penerbangan_becky;
+
+-- ============================================
+-- 1. MEMBUAT TABEL
+-- ============================================
+
+-- a. Akun
 CREATE TABLE Akun (
-    Id_Akun VARCHAR(10) PRIMARY KEY,
-    Username VARCHAR(50),
-    Password VARCHAR(50),
-    Nama VARCHAR(100),
-    Tanggal_Lahir DATE,
-    Nomor_Telepon VARCHAR(15)
+    id_akun VARCHAR(255) PRIMARY KEY,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    nama_lengkap VARCHAR(255),
+    email VARCHAR(255),
+    nomor_telepon VARCHAR(255)
 );
 
--- 2. TABEL MASKAPAI
+-- b. Maskapai
 CREATE TABLE Maskapai (
-    Id_Maskapai VARCHAR(10) PRIMARY KEY,
-    Nama_Maskapai VARCHAR(100),
-    Perusahaan VARCHAR(100),
-    Jumlah_Kru INT,
-    Deskripsi TEXT
+    id_maskapai VARCHAR(255) PRIMARY KEY,
+    kode_maskapai VARCHAR(255),
+    nama_maskapai VARCHAR(255),
+    negara_asal VARCHAR(255),
+    deskripsi TEXT
 );
 
--- 3. TABEL NEGARA
+-- c. Negara
 CREATE TABLE Negara (
-    Id_Negara VARCHAR(10) PRIMARY KEY,
-    Nama_Negara VARCHAR(50),
-    Ibu_Kota_Negara VARCHAR(50)
+    id_negara VARCHAR(255) PRIMARY KEY,
+    kode_negara VARCHAR(255),
+    nama_negara VARCHAR(255),
+    ibukota VARCHAR(255)
 );
 
--- 4. TABEL BANDARA
+-- d. Bandara
 CREATE TABLE Bandara (
-    Id_Bandara VARCHAR(10) PRIMARY KEY,
-    Nama_Bandara VARCHAR(100),
-    Kode_IATA VARCHAR(5),
-    Kota VARCHAR(50),
-    Id_Negara VARCHAR(10),
-    Jumlah_Terminal INT,
-    Alamat TEXT
+    id_bandara VARCHAR(255) PRIMARY KEY,
+    kode_bandara VARCHAR(255),
+    nama_bandara VARCHAR(255),
+    kota VARCHAR(255),
+    id_negara VARCHAR(255),
+    jumlah_terminal INT
 );
 
--- 5. TABEL JADWAL PENERBANGAN
+-- e. Jadwal Penerbangan
 CREATE TABLE Jadwal_Penerbangan (
-    Id_Jadwal_Penerbangan VARCHAR(10) PRIMARY KEY,
-    Kode_Penerbangan VARCHAR(10),
-    Id_Bandara_Keberangkatan VARCHAR(10),
-    Id_Tujuan_Bandara VARCHAR(10),
-    Id_Maskapai VARCHAR(10),
-    Tanggal_Waktu_Keberangkatan DATETIME,
-    Durasi_Penerbangan TIME,
-    Harga_Pertiket INT
+    id_jadwal VARCHAR(255) PRIMARY KEY,
+    kode_penerbangan VARCHAR(255),
+    id_maskapai VARCHAR(255),
+    id_bandara_keberangkatan VARCHAR(255),
+    id_bandara_tujuan VARCHAR(255),
+    waktu_keberangkatan DATETIME,
+    waktu_kedatangan DATETIME,
+    harga_per_tiket DECIMAL(12,2)
 );
 
--- 6. TABEL TRANSASKSI
+-- f. Transaksi
 CREATE TABLE Transaksi (
-    Id_Transaksi VARCHAR(10) PRIMARY KEY,
-    Id_Akun VARCHAR(10),
-    Tanggal_Transaksi DATE,
-    Id_Jadwal_Penerbangan VARCHAR(10),
-    Jumlah_Penerbangan INT,
-    Total_Harga INT,
-    Id_Kode_Promo VARCHAR(10)
+    id_transaksi VARCHAR(255) PRIMARY KEY,
+    id_akun VARCHAR(255),
+    tanggal_transaksi DATE,
+    id_jadwal VARCHAR(255),
+    id_kode_promo VARCHAR(255),
+    total_harga DECIMAL(12,2)
 );
 
--- 7. TABEL DETAIL TRANSAKSI
+-- g. Detail Transaksi
 CREATE TABLE Detail_Transaksi (
-    Id_Detail_Transaksi VARCHAR(10) PRIMARY KEY,
-    Id_Transaksi VARCHAR(10),
-    Tiket_Penumpang INT,
-    Nama_Lengkap_Penumpang VARCHAR(100)
+    id_detail VARCHAR(255) PRIMARY KEY,
+    id_transaksi VARCHAR(255),
+    nama_lengkap_penumpang VARCHAR(255),
+    nomor_kursi VARCHAR(255),
+    status_pembayaran VARCHAR(255)
 );
 
--- 8. TABEL KODE PROMO
+-- h. Kode Promo
 CREATE TABLE Kode_Promo (
-    Id_Kode_Promo VARCHAR(10) PRIMARY KEY,
-    Kode_Promo VARCHAR(20),
-    Persentase_Diskon VARCHAR(5),
-    Berlaku_Sampai DATE,
-    Deskripsi TEXT
+    id_promo VARCHAR(255) PRIMARY KEY,
+    kode_promo VARCHAR(255),
+    persentase_diskon DECIMAL(5,2),
+    berlaku_sampai DATE,
+    deskripsi TEXT
 );
 
--- 9. TABEL STATUS PENERBANGAN
+-- i. Status Penerbangan
 CREATE TABLE Status_Penerbangan (
-    Id_Status_Penerbangan VARCHAR(10) PRIMARY KEY,
-    Nama_Status VARCHAR(20)
+    id_status VARCHAR(255) PRIMARY KEY,
+    nama_status VARCHAR(255)
 );
 
--- 10. TABEL PERUBAHAN STATUS JADWAL PENERBANGAN
-CREATE TABLE Perubahan_Status_Jadwal_Penerbangan (
-    Id_Perubahan_Status_Jadwal VARCHAR(10) PRIMARY KEY,
-    Id_Jadwal_Penerbangan VARCHAR(10),
-    Id_Status_Penerbangan VARCHAR(10),
-    Waktu_Perubahan DATETIME,
-    Perkiraan_Waktu_Delay TIME
+-- j. Perubahan Status Jadwal Penerbangan
+CREATE TABLE Perubahan_Status_Jadwal (
+    id_perubahan VARCHAR(255) PRIMARY KEY,
+    id_jadwal VARCHAR(255),
+    id_status VARCHAR(255),
+    waktu_perubahan DATETIME,
+    keterangan TEXT
 );
 
--- =====================================================
--- MEMASUKKAN DATA (5 DATA PER TABEL, KECUALI STATUS PENERBANGAN)
--- =====================================================
+-- ============================================
+-- 2. PRIMARY KEY sudah ditambahkan di setiap tabel
+-- ============================================
 
--- DATA AKUN (5 AKUN, AKUN PERTAMA NAMA PEMBUAT DATABASE)
-INSERT INTO Akun VALUES
-('AKN001', 'budi_santoso', 'pass123', 'Budi Santoso', '1990-05-12', '081234567890'),
-('AKN002', 'siti_aminah', 'pass456', 'Siti Aminah', '1992-08-20', '081234567891'),
-('AKN003', 'agus_wijaya', 'pass789', 'Agus Wijaya', '1988-03-15', '081234567892'),
-('AKN004', 'diana_pratiwi', 'pass321', 'Diana Pratiwi', '1995-11-02', '081234567893'),
-('AKN005', 'rismawan', 'pass654', 'Rismawan', '1991-07-19', '081234567894'); -- Nama pembuat database
+-- ============================================
+-- 3. TAMBAHKAN 4 DATA PADA SETIAP TABEL
+-- (kecuali Status Penerbangan)
+-- ============================================
 
--- DATA MASKAPAI
-INSERT INTO Maskapai VALUES
-('MSK001', 'Garuda Indonesia', 'PT Garuda Indonesia', 150, 'Maskapai nasional Indonesia'),
-('MSK002', 'Lion Air', 'PT Lion Mentari Airlines', 120, 'Maskapai swasta terbesar'),
-('MSK003', 'Citilink', 'PT Citilink Indonesia', 100, 'Maskapai berbiaya hemat'),
-('MSK004', 'Batik Air', 'PT Batik Air Indonesia', 110, 'Maskapai full service'),
-('MSK005', 'Sriwijaya Air', 'PT Sriwijaya Air', 90, 'Maskapai regional');
+-- 3a. Kode Promo (4 data)
+INSERT INTO Kode_Promo (id_promo, kode_promo, persentase_diskon, berlaku_sampai, deskripsi) VALUES
+('P001', 'PROMO10', 10.00, '2025-12-31', 'Diskon 10% untuk semua penerbangan'),
+('P002', 'DISKON20', 20.00, '2025-10-15', 'Diskon 20% minimal pembelian 2 tiket'),
+('P003', 'HEMAT15', 15.00, '2025-11-30', 'Diskon 15% untuk penerbangan pagi'),
+('P004', 'FLASH30', 30.00, '2025-09-01', 'Diskon 30% flash sale');
 
--- DATA NEGARA
-INSERT INTO Negara VALUES
-('NGR001', 'Indonesia', 'Jakarta'),
-('NGR002', 'Malaysia', 'Kuala Lumpur'),
-('NGR003', 'Singapura', 'Singapura'),
-('NGR004', 'Thailand', 'Bangkok'),
-('NGR005', 'Vietnam', 'Hanoi');
+-- 3b. Maskapai (4 data)
+INSERT INTO Maskapai (id_maskapai, kode_maskapai, nama_maskapai, negara_asal, deskripsi) VALUES
+('M001', 'GA', 'Garuda Indonesia', 'Indonesia', 'Maskapai nasional Indonesia'),
+('M002', 'JT', 'Lion Air', 'Indonesia', 'Maskapai swasta terbesar'),
+('M003', 'QZ', 'AirAsia', 'Indonesia', 'Maskapai berbiaya hemat'),
+('M004', 'IU', 'Super Air Jet', 'Indonesia', 'Maskapai low-cost carrier');
 
--- DATA BANDARA
-INSERT INTO Bandara VALUES
-('BDR001', 'Soekarno-Hatta International Airport', 'CGK', 'Tangerang', 'NGR001', 3, 'Jl. Bandara Soekarno-Hatta, Tangerang'),
-('BDR002', 'Ngurah Rai International Airport', 'DPS', 'Denpasar', 'NGR001', 2, 'Jl. Airport Ngurah Rai, Bali'),
-('BDR003', 'Juanda International Airport', 'SUB', 'Surabaya', 'NGR001', 2, 'Jl. Raya Juanda, Sidoarjo'),
-('BDR004', 'Kuala Lumpur International Airport', 'KUL', 'Sepang', 'NGR002', 2, 'Jalan KLIA, Sepang'),
-('BDR005', 'Changi Airport', 'SIN', 'Changi', 'NGR003', 4, 'Airport Boulevard, Singapore');
+-- 3c. Negara (4 data)
+INSERT INTO Negara (id_negara, kode_negara, nama_negara, ibukota) VALUES
+('N001', 'ID', 'Indonesia', 'Jakarta'),
+('N002', 'SG', 'Singapura', 'Singapura'),
+('N003', 'MY', 'Malaysia', 'Kuala Lumpur'),
+('N004', 'TH', 'Thailand', 'Bangkok');
 
--- DATA JADWAL PENERBANGAN (HUBUNGAN UNTUK 5 AKUN, MASING2 PERGI & PULANG)
-INSERT INTO Jadwal_Penerbangan VALUES
--- Akun 1: Budi Santoso (CGK - DPS pergi, DPS - CGK pulang)
-('JDP001', 'GA-123', 'BDR001', 'BDR002', 'MSK001', '2025-06-01 08:00:00', '02:00:00', 1200000),
-('JDP002', 'GA-456', 'BDR002', 'BDR001', 'MSK001', '2025-06-05 14:00:00', '02:00:00', 1200000),
+-- 3d. Bandara (4 data)
+INSERT INTO Bandara (id_bandara, kode_bandara, nama_bandara, kota, id_negara, jumlah_terminal) VALUES
+('B001', 'CGK', 'Soekarno-Hatta International Airport', 'Tangerang', 'N001', 3),
+('B002', 'DPS', 'Ngurah Rai International Airport', 'Denpasar', 'N001', 2),
+('B003', 'SUB', 'Juanda International Airport', 'Surabaya', 'N001', 2),
+('B004', 'KNO', 'Kualanamu International Airport', 'Medan', 'N001', 2);
 
--- Akun 2: Siti Aminah (SUB - DPS pergi, DPS - SUB pulang)
-('JDP003', 'JT-789', 'BDR003', 'BDR002', 'MSK002', '2025-06-10 07:30:00', '01:30:00', 800000),
-('JDP004', 'JT-987', 'BDR002', 'BDR003', 'MSK002', '2025-06-15 16:00:00', '01:30:00', 800000),
+-- Jadwal Penerbangan (8 data untuk kebutuhan berangkat & pulang)
+INSERT INTO Jadwal_Penerbangan (id_jadwal, kode_penerbangan, id_maskapai, id_bandara_keberangkatan, id_bandara_tujuan, waktu_keberangkatan, waktu_kedatangan, harga_per_tiket) VALUES
+('J001', 'GA-202', 'M001', 'B001', 'B002', '2025-06-20 07:00:00', '2025-06-20 08:30:00', 1200000),
+('J002', 'GA-203', 'M001', 'B002', 'B001', '2025-06-25 15:00:00', '2025-06-25 16:30:00', 1200000),
+('J003', 'JT-101', 'M002', 'B001', 'B003', '2025-06-21 09:00:00', '2025-06-21 10:15:00', 800000),
+('J004', 'JT-102', 'M002', 'B003', 'B001', '2025-06-26 14:00:00', '2025-06-26 15:15:00', 800000),
+('J005', 'QZ-555', 'M003', 'B002', 'B004', '2025-07-01 10:00:00', '2025-07-01 11:45:00', 950000),
+('J006', 'QZ-556', 'M003', 'B004', 'B002', '2025-07-05 16:00:00', '2025-07-05 17:45:00', 950000),
+('J007', 'IU-888', 'M004', 'B003', 'B004', '2025-07-10 06:00:00', '2025-07-10 07:20:00', 700000),
+('J008', 'IU-889', 'M004', 'B004', 'B003', '2025-07-15 18:00:00', '2025-07-15 19:20:00', 700000);
 
--- Akun 3: Agus Wijaya (CGK - SUB pergi, SUB - CGK pulang)
-('JDP005', 'QG-111', 'BDR001', 'BDR003', 'MSK003', '2025-07-01 09:00:00', '01:45:00', 900000),
-('JDP006', 'QG-222', 'BDR003', 'BDR001', 'MSK003', '2025-07-05 17:30:00', '01:45:00', 900000),
+-- Status Penerbangan
+INSERT INTO Status_Penerbangan (id_status, nama_status) VALUES
+('S001', 'On Time'),
+('S002', 'Delayed'),
+('S003', 'Cancelled'),
+('S004', 'Boarding'),
+('S005', 'Take Off'),
+('S006', 'Landing');
 
--- Akun 4: Diana Pratiwi (CGK - KUL pergi, KUL - CGK pulang)
-('JDP007', 'ID-333', 'BDR001', 'BDR004', 'MSK004', '2025-07-10 06:00:00', '02:30:00', 1500000),
-('JDP008', 'ID-444', 'BDR004', 'BDR001', 'MSK004', '2025-07-15 19:00:00', '02:30:00', 1500000),
+-- Perubahan Status Jadwal (4 data)
+INSERT INTO Perubahan_Status_Jadwal (id_perubahan, id_jadwal, id_status, waktu_perubahan, keterangan) VALUES
+('PS001', 'J001', 'S001', '2025-06-20 06:30:00', 'Penerbangan tepat waktu'),
+('PS002', 'J001', 'S004', '2025-06-20 06:50:00', 'Proses boarding dimulai'),
+('PS003', 'J002', 'S001', '2025-06-25 14:30:00', 'Penerbangan tepat waktu'),
+('PS004', 'J003', 'S002', '2025-06-21 08:30:00', 'Delay 30 menit karena cuaca');
 
--- Akun 5: Rismawan (CGK - SIN pergi, SIN - CGK pulang)
-('JDP009', 'GA-555', 'BDR001', 'BDR005', 'MSK001', '2025-08-01 10:00:00', '02:15:00', 1800000),
-('JDP010', 'GA-666', 'BDR005', 'BDR001', 'MSK001', '2025-08-05 20:00:00', '02:15:00', 1800000);
+-- ============================================
+-- 4 & 5. MEMBUAT 4 AKUN + TRANSAKSI
+-- (masing-masing 2 transaksi: Berangkat dan Pulang)
+-- Akun pertama = Becky (pembuat database)
+-- ============================================
 
--- DATA KODE PROMO
-INSERT INTO Kode_Promo VALUES
-('PRM001', 'PROMO20', '20%', '2025-12-31', 'Diskon 20% untuk semua rute'),
-('PRM002', 'PROMO10', '10%', '2025-12-31', 'Diskon 10% minimum pembelian 500rb'),
-('PRM003', 'FLASHSALE', '30%', '2025-06-30', 'Diskon 30% khusus akhir pekan'),
-('PRM004', 'BONUS15', '15%', '2025-09-30', 'Diskon 15% untuk anggota baru'),
-('PRM005', 'WEEKEND25', '25%', '2025-08-31', 'Diskon 25% untuk penerbangan Sabtu-Minggu');
+-- 4 Akun
+INSERT INTO Akun (id_akun, username, password, nama_lengkap, email, nomor_telepon) VALUES
+('A001', 'becky', 'becky123', 'Becky', 'becky@example.com', '081234567890'),
+('A002', 'johndoe', 'john123', 'John Doe', 'john@example.com', '081298765432'),
+('A003', 'janesmith', 'jane123', 'Jane Smith', 'jane@example.com', '081255512345'),
+('A004', 'mikebrown', 'mike123', 'Mike Brown', 'mike@example.com', '081277788899');
 
--- DATA TRANSAKSI (MASING2 AKUN 2 TRANSAKSI: PERGI & PULANG)
-INSERT INTO Transaksi VALUES
--- Akun 1 (Budi Santoso)
-('TRX001', 'AKN001', '2025-05-20', 'JDP001', 1, 1200000, 'PRM001'),
-('TRX002', 'AKN001', '2025-05-20', 'JDP002', 1, 1200000, 'PRM001'),
--- Akun 2 (Siti Aminah)
-('TRX003', 'AKN002', '2025-05-25', 'JDP003', 2, 1600000, 'PRM002'),
-('TRX004', 'AKN002', '2025-05-25', 'JDP004', 2, 1600000, 'PRM002'),
--- Akun 3 (Agus Wijaya)
-('TRX005', 'AKN003', '2025-06-01', 'JDP005', 1, 900000, NULL),
-('TRX006', 'AKN003', '2025-06-01', 'JDP006', 1, 900000, NULL),
--- Akun 4 (Diana Pratiwi)
-('TRX007', 'AKN004', '2025-06-10', 'JDP007', 3, 4500000, 'PRM003'),
-('TRX008', 'AKN004', '2025-06-10', 'JDP008', 3, 4500000, 'PRM003'),
--- Akun 5 (Rismawan)
-('TRX009', 'AKN005', '2025-07-01', 'JDP009', 2, 3600000, 'PRM005'),
-('TRX010', 'AKN005', '2025-07-01', 'JDP010', 2, 3600000, 'PRM005');
+-- ============================================
+-- TRANSAKSI AKUN 1 (Becky)
+-- Berangkat: Jakarta (CGK) -> Denpasar (DPS)  [J001]
+-- Pulang: Denpasar (DPS) -> Jakarta (CGK)     [J002]
+-- ============================================
 
--- DATA DETAIL TRANSAKSI (MINIMAL 1 PENUMPANG PER TIKET)
-INSERT INTO Detail_Transaksi VALUES
--- Akun 1
-('DTX001', 'TRX001', 1, 'Budi Santoso'),
-('DTX002', 'TRX002', 1, 'Budi Santoso'),
--- Akun 2
-('DTX003', 'TRX003', 1, 'Siti Aminah'),
-('DTX004', 'TRX003', 2, 'Ahmad Fauzi'),
-('DTX005', 'TRX004', 1, 'Siti Aminah'),
-('DTX006', 'TRX004', 2, 'Ahmad Fauzi'),
--- Akun 3
-('DTX007', 'TRX005', 1, 'Agus Wijaya'),
-('DTX008', 'TRX006', 1, 'Agus Wijaya'),
--- Akun 4
-('DTX009', 'TRX007', 1, 'Diana Pratiwi'),
-('DTX010', 'TRX007', 2, 'Rina Andriani'),
-('DTX011', 'TRX007', 3, 'Bayu Saputra'),
-('DTX012', 'TRX008', 1, 'Diana Pratiwi'),
-('DTX013', 'TRX008', 2, 'Rina Andriani'),
-('DTX014', 'TRX008', 3, 'Bayu Saputra'),
--- Akun 5
-('DTX015', 'TRX009', 1, 'Rismawan'),
-('DTX016', 'TRX009', 2, 'Lestari'),
-('DTX017', 'TRX010', 1, 'Rismawan'),
-('DTX018', 'TRX010', 2, 'Lestari');
+-- Transaksi 1: Berangkat (pakai promo PROMO10)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T001', 'A001', '2025-06-01', 'J001', 'P001', 1080000);
 
--- DATA STATUS PENERBANGAN
-INSERT INTO Status_Penerbangan VALUES
-('STS001', 'Tepat Waktu'),
-('STS002', 'Delay');
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D001', 'T001', 'Becky', '12A', 'Sukses');
 
--- DATA PERUBAHAN STATUS JADWAL PENERBANGAN
-INSERT INTO Perubahan_Status_Jadwal_Penerbangan VALUES
-('PSJ001', 'JDP001', 'STS001', '2025-06-01 06:00:00', NULL),
-('PSJ002', 'JDP002', 'STS001', '2025-06-05 12:00:00', NULL),
-('PSJ003', 'JDP003', 'STS002', '2025-06-10 05:30:00', '01:00:00'),
-('PSJ004', 'JDP004', 'STS001', '2025-06-15 14:00:00', NULL),
-('PSJ005', 'JDP005', 'STS001', '2025-07-01 07:00:00', NULL),
-('PSJ006', 'JDP006', 'STS001', '2025-07-05 15:30:00', NULL),
-('PSJ007', 'JDP007', 'STS002', '2025-07-10 04:00:00', '02:30:00'),
-('PSJ008', 'JDP008', 'STS001', '2025-07-15 17:00:00', NULL),
-('PSJ009', 'JDP009', 'STS001', '2025-08-01 08:00:00', NULL),
-('PSJ010', 'JDP010', 'STS001', '2025-08-05 18:00:00', NULL);
+-- Transaksi 2: Pulang (pakai promo DISKON20)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T002', 'A001', '2025-06-02', 'J002', 'P002', 960000);
 
--- =====================================================
--- QUERY UNTUK SCREENSHOT (SELECT * FROM ...)
--- =====================================================
-1 data Akun
-1 data Kode_Promo
-1 data Status_Penerbangan
-1 data Perubahan_Status_Jadwal_Penerbangan
-1 data Maskapai
-2 data Negara
-2 data Bandara
-2 data Jadwal_Penerbangan
-2 data Transaksi
-2 data Detail_Transaksi
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D002', 'T002', 'Becky', '5C', 'Sukses');
 
--- 1 DATA AKUN (NAMA PEMBUAT DATABASE = Rismawan)
-INSERT INTO Akun VALUES
-('AKN001', 'rismawan', 'pass123', 'Rismawan', '1991-07-19', '081234567890');
+-- ============================================
+-- TRANSAKSI AKUN 2 (John Doe)
+-- Berangkat: Jakarta (CGK) -> Surabaya (SUB)  [J003]
+-- Pulang: Surabaya (SUB) -> Jakarta (CGK)     [J004]
+-- ============================================
 
--- 1 DATA MASKAPAI
-INSERT INTO Maskapai VALUES
-('MSK001', 'Garuda Indonesia', 'PT Garuda Indonesia', 150, 'Maskapai nasional Indonesia');
+-- Transaksi 3: Berangkat (pakai promo HEMAT15)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T003', 'A002', '2025-06-05', 'J003', 'P003', 680000);
 
--- 2 DATA NEGARA
-INSERT INTO Negara VALUES
-('NGR001', 'Indonesia', 'Jakarta'),
-('NGR002', 'Malaysia', 'Kuala Lumpur');
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D003', 'T003', 'John Doe', '2B', 'Sukses');
 
--- 2 DATA BANDARA
-INSERT INTO Bandara VALUES
-('BDR001', 'Soekarno-Hatta International Airport', 'CGK', 'Tangerang', 'NGR001', 3, 'Jl. Bandara Soekarno-Hatta, Tangerang'),
-('BDR002', 'Ngurah Rai International Airport', 'DPS', 'Denpasar', 'NGR001', 2, 'Jl. Airport Ngurah Rai, Bali');
+-- Transaksi 4: Pulang (tanpa promo)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T004', 'A002', '2025-06-06', 'J004', NULL, 800000);
 
--- 2 DATA JADWAL PENERBANGAN (BERANGKAT DAN PULANG)
--- Berangkat: Jakarta (CGK) ke Denpasar (DPS)
--- Pulang: Denpasar (DPS) ke Jakarta (CGK)
-INSERT INTO Jadwal_Penerbangan VALUES
-('JDP001', 'GA-123', 'BDR001', 'BDR002', 'MSK001', '2025-06-01 08:00:00', '02:00:00', 1200000),
-('JDP002', 'GA-456', 'BDR002', 'BDR001', 'MSK001', '2025-06-05 14:00:00', '02:00:00', 1200000);
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D004', 'T004', 'John Doe', '8D', 'Sukses');
 
--- 1 DATA KODE PROMO
-INSERT INTO Kode_Promo VALUES
-('PRM001', 'PROMO20', '20%', '2025-12-31', 'Diskon 20% untuk semua rute');
+-- ============================================
+-- TRANSAKSI AKUN 3 (Jane Smith)
+-- Berangkat: Denpasar (DPS) -> Medan (KNO)   [J005]
+-- Pulang: Medan (KNO) -> Denpasar (DPS)      [J006]
+-- ============================================
 
--- 2 DATA TRANSAKSI (1 AKUN MELAKUKAN 2 TRANSAKSI: PERGI & PULANG)
-INSERT INTO Transaksi VALUES
-('TRX001', 'AKN001', '2025-05-20', 'JDP001', 1, 1200000, 'PRM001'),  -- Berangkat
-('TRX002', 'AKN001', '2025-05-20', 'JDP002', 1, 1200000, 'PRM001');  -- Pulang
+-- Transaksi 5: Berangkat (pakai promo FLASH30)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T005', 'A003', '2025-06-10', 'J005', 'P004', 665000);
 
--- 2 DATA DETAIL TRANSAKSI (MASING-MASING TRANSAKSI 1 PENUMPANG)
-INSERT INTO Detail_Transaksi VALUES
-('DTX001', 'TRX001', 1, 'Rismawan'),   -- Penumpang berangkat
-('DTX002', 'TRX002', 1, 'Rismawan');   -- Penumpang pulang
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D005', 'T005', 'Jane Smith', '3E', 'Sukses');
 
--- 1 DATA STATUS PENERBANGAN
-INSERT INTO Status_Penerbangan VALUES
-('STS001', 'Tepat Waktu');
+-- Transaksi 6: Pulang (pakai promo PROMO10)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T006', 'A003', '2025-06-11', 'J006', 'P001', 855000);
 
--- 1 DATA PERUBAHAN STATUS JADWAL PENERBANGAN
-INSERT INTO Perubahan_Status_Jadwal_Penerbangan VALUES
-('PSJ001', 'JDP001', 'STS001', '2025-06-01 06:00:00', NULL);
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D006', 'T006', 'Jane Smith', '11F', 'Sukses');
 
+-- ============================================
+-- TRANSAKSI AKUN 4 (Mike Brown)
+-- Berangkat: Surabaya (SUB) -> Medan (KNO)   [J007]
+-- Pulang: Medan (KNO) -> Surabaya (SUB)      [J008]
+-- ============================================
+
+-- Transaksi 7: Berangkat (tanpa promo)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T007', 'A004', '2025-06-15', 'J007', NULL, 700000);
+
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D007', 'T007', 'Mike Brown', '1A', 'Sukses');
+
+-- Transaksi 8: Pulang (pakai promo HEMAT15)
+INSERT INTO Transaksi (id_transaksi, id_akun, tanggal_transaksi, id_jadwal, id_kode_promo, total_harga) VALUES
+('T008', 'A004', '2025-06-16', 'J008', 'P003', 595000);
+
+INSERT INTO Detail_Transaksi (id_detail, id_transaksi, nama_lengkap_penumpang, nomor_kursi, status_pembayaran) VALUES
+('D008', 'T008', 'Mike Brown', '7C', 'Sukses');
+
+-- ============================================
+-- 7. INNER JOIN (sesuai format soal)
+-- Menampilkan: Id Transaksi | Username | Nama Lengkap Penumpang | 
+-- Kode Penerbangan | Maskapai | Id Bandara Keberangkatan | 
+-- Id Tujuan Bandara | Status | Total Harga
+-- ============================================
+
+SELECT 
+    t.id_transaksi AS 'Id Transaksi',
+    a.username AS 'Username',
+    dt.nama_lengkap_penumpang AS 'Nama Lengkap Penumpang',
+    jp.kode_penerbangan AS 'Kode Penerbangan',
+    m.nama_maskapai AS 'Maskapai',
+    b1.kode_bandara AS 'Id Bandara Keberangkatan',
+    b2.kode_bandara AS 'Id Tujuan Bandara',
+    s.nama_status AS 'Status',
+    t.total_harga AS 'Total Harga'
+FROM Transaksi t
+JOIN Akun a ON t.id_akun = a.id_akun
+JOIN Detail_Transaksi dt ON t.id_transaksi = dt.id_transaksi
+JOIN Jadwal_Penerbangan jp ON t.id_jadwal = jp.id_jadwal
+JOIN Maskapai m ON jp.id_maskapai = m.id_maskapai
+JOIN Bandara b1 ON jp.id_bandara_keberangkatan = b1.id_bandara
+JOIN Bandara b2 ON jp.id_bandara_tujuan = b2.id_bandara
+LEFT JOIN Perubahan_Status_Jadwal psj ON jp.id_jadwal = psj.id_jadwal
+LEFT JOIN Status_Penerbangan s ON psj.id_status = s.id_status
+GROUP BY t.id_transaksi
+ORDER BY t.id_transaksi;
+
+-- ============================================
+-- 9. EXPORT DATABASE (jalankan di terminal/cmd)
+-- ============================================
+-- mysqldump -u root -p db_penerbangan_becky > Database_Penerbangan_Becky.sql
